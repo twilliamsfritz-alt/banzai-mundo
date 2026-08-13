@@ -1,0 +1,671 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Banzai Mundo — lo que sabés, en cualquier idioma</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0F1729;
+  --surface: #182238;
+  --surface2: #1F2B45;
+  --border: #2A3752;
+  --gold: #E8A857;
+  --coral: #E76F51;
+  --text: #F4F1EA;
+  --text2: #9BA8C4;
+  --text3: #64729A;
+  --green: #6FCF97;
+  --r: 14px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  min-height: 100vh;
+}
+h1, h2, h3, .display { font-family: 'Fraunces', serif; }
+.hidden { display: none !important; }
+a { color: inherit; }
+button { font-family: inherit; cursor: pointer; border: none; }
+input, textarea, select { font-family: inherit; }
+
+.topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 20px 32px; border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; background: rgba(15,23,41,.92); backdrop-filter: blur(8px); z-index: 50;
+}
+.logo { display: flex; align-items: center; gap: 10px; font-family: 'Fraunces', serif; font-size: 20px; font-weight: 600; }
+.logo-mark {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: conic-gradient(from 180deg, var(--gold), var(--coral), var(--gold));
+  display: flex; align-items: center; justify-content: center;
+}
+.nav-actions { display: flex; gap: 10px; align-items: center; }
+.nav-link { padding: 8px 14px; font-size: 14px; color: var(--text2); border-radius: 8px; background: none; }
+.nav-link:hover { color: var(--text); }
+.btn-primary { background: var(--coral); color: #fff; padding: 9px 18px; border-radius: 10px; font-weight: 600; font-size: 14px; }
+.btn-primary:hover { background: #d9603f; }
+.btn-ghost { background: var(--surface2); color: var(--text); padding: 9px 18px; border-radius: 10px; font-weight: 600; font-size: 14px; border: 1px solid var(--border); }
+.btn-ghost:hover { border-color: var(--gold); }
+
+.hero { padding: 72px 32px 40px; max-width: 900px; margin: 0 auto; text-align: center; }
+.hero h1 { font-size: clamp(32px, 5vw, 56px); font-weight: 600; line-height: 1.1; margin-bottom: 18px; }
+.hero h1 em { font-style: italic; color: var(--gold); }
+.hero p { color: var(--text2); font-size: 18px; max-width: 560px; margin: 0 auto 32px; line-height: 1.6; }
+.hero-search { display: flex; gap: 10px; max-width: 520px; margin: 0 auto; }
+.hero-search input {
+  flex: 1; background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+  padding: 14px 18px; color: var(--text); font-size: 15px;
+}
+.hero-search input:focus { outline: none; border-color: var(--gold); }
+
+.ticker-wrap { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 16px 0; margin-top: 48px; overflow: hidden; background: var(--surface); }
+.ticker-label { font-size: 11px; text-transform: uppercase; letter-spacing: .1em; color: var(--gold); text-align: center; margin-bottom: 10px; font-weight: 600; }
+.ticker-track { display: flex; gap: 40px; animation: scroll-left 32s linear infinite; white-space: nowrap; width: max-content; }
+.ticker-item { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--text2); }
+.ticker-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); flex-shrink: 0; }
+@keyframes scroll-left { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) { .ticker-track { animation: none; } }
+
+.cats { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; padding: 32px 32px 8px; max-width: 1000px; margin: 0 auto; }
+.cat-pill {
+  padding: 8px 16px; border-radius: 999px; border: 1px dashed var(--border);
+  font-size: 13px; color: var(--text2); background: var(--surface);
+}
+.cat-pill.active { border: 1px solid var(--gold); color: var(--gold); border-style: solid; }
+.cat-pill:hover { border-color: var(--gold); color: var(--text); }
+
+.container { max-width: 1100px; margin: 0 auto; padding: 24px 32px 80px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px; margin-top: 20px; }
+.skill-card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--r);
+  padding: 22px; cursor: pointer; transition: border-color .15s, transform .15s; position: relative;
+}
+.skill-card:hover { border-color: var(--gold); transform: translateY(-2px); }
+.skill-cat { font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--gold); font-weight: 600; margin-bottom: 8px; }
+.skill-title { font-family: 'Fraunces', serif; font-size: 18px; font-weight: 600; margin-bottom: 8px; line-height: 1.3; }
+.skill-desc { font-size: 13px; color: var(--text2); line-height: 1.5; margin-bottom: 16px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.skill-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 14px; border-top: 1px solid var(--border); }
+.provider { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text2); }
+.avatar { width: 24px; height: 24px; border-radius: 50%; background: var(--surface2); display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: var(--gold); }
+.price { font-weight: 700; color: var(--text); font-size: 14px; }
+.rating { font-size: 11px; color: var(--text3); }
+.empty { text-align: center; padding: 60px 20px; color: var(--text3); }
+
+.modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,.6); z-index: 200; display: flex; align-items: center; justify-content: center; padding: 20px; }
+.modal { background: var(--surface); border: 1px solid var(--border); border-radius: 18px; padding: 32px; width: 440px; max-width: 100%; max-height: 90vh; overflow-y: auto; }
+.modal h2 { font-size: 22px; margin-bottom: 6px; }
+.modal .sub { color: var(--text3); font-size: 13px; margin-bottom: 22px; }
+label { display: block; font-size: 12px; color: var(--text2); margin-bottom: 6px; margin-top: 14px; font-weight: 600; }
+label:first-of-type { margin-top: 0; }
+input, textarea, select {
+  width: 100%; background: var(--surface2); border: 1px solid var(--border); border-radius: 10px;
+  padding: 11px 14px; color: var(--text); font-size: 14px;
+}
+input:focus, textarea:focus, select:focus { outline: none; border-color: var(--gold); }
+textarea { min-height: 90px; resize: vertical; }
+.modal-actions { display: flex; gap: 10px; margin-top: 22px; }
+.modal-actions button { flex: 1; padding: 12px; border-radius: 10px; font-weight: 600; font-size: 14px; }
+.err-text { color: var(--coral); font-size: 12px; margin-top: 10px; min-height: 16px; }
+.switch-link { text-align: center; font-size: 13px; color: var(--text3); margin-top: 18px; }
+.switch-link button { background: none; color: var(--gold); font-weight: 600; padding: 0; }
+
+.app-nav { display: flex; gap: 4px; }
+.app-nav button.tab { background: none; color: var(--text2); padding: 8px 14px; font-size: 14px; border-radius: 8px; }
+.app-nav button.tab.active { background: var(--surface2); color: var(--gold); }
+
+.section-title { font-family: 'Fraunces', serif; font-size: 26px; margin-bottom: 4px; }
+.section-sub { color: var(--text3); font-size: 14px; margin-bottom: 24px; }
+
+.req-list { display: flex; flex-direction: column; gap: 10px; }
+.req-item { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.req-item:hover { border-color: var(--gold); }
+.req-badge { font-size: 11px; padding: 4px 10px; border-radius: 999px; font-weight: 600; }
+.req-badge.pending { background: rgba(232,168,87,.15); color: var(--gold); }
+.req-badge.accepted { background: rgba(111,207,151,.15); color: var(--green); }
+.req-badge.declined { background: rgba(231,111,81,.15); color: var(--coral); }
+.req-badge.completed { background: var(--surface2); color: var(--text2); }
+
+.chat-box { display: flex; flex-direction: column; height: 480px; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+.chat-msgs { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+.bubble { max-width: 75%; padding: 10px 14px; border-radius: 14px; font-size: 14px; line-height: 1.5; }
+.bubble.mine { align-self: flex-end; background: var(--coral); color: #fff; border-bottom-right-radius: 4px; }
+.bubble.theirs { align-self: flex-start; background: var(--surface2); border-bottom-left-radius: 4px; }
+.bubble .translated { display: block; margin-top: 6px; padding-top: 6px; border-top: 1px solid rgba(255,255,255,.15); font-size: 12px; opacity: .8; font-style: italic; }
+.chat-input { display: flex; gap: 10px; padding: 14px; border-top: 1px solid var(--border); }
+.chat-input input { flex: 1; }
+.chat-input button { background: var(--coral); color: #fff; padding: 0 20px; border-radius: 10px; font-weight: 600; }
+
+.stars { display: flex; gap: 4px; font-size: 24px; cursor: pointer; }
+.stars span { color: var(--border); }
+.stars span.on { color: var(--gold); }
+
+.toast-host { position: fixed; bottom: 20px; right: 20px; z-index: 999; display: flex; flex-direction: column; gap: 8px; }
+.toast { padding: 12px 18px; border-radius: 10px; font-size: 13px; font-weight: 600; color: #fff; box-shadow: 0 8px 24px rgba(0,0,0,.3); }
+.toast.ok { background: var(--green); color: #0F1729; }
+.toast.err { background: var(--coral); }
+
+@media (max-width: 640px) {
+  .topbar { padding: 14px 16px; }
+  .hero { padding: 40px 16px 24px; }
+  .container { padding: 16px 16px 60px; }
+}
+</style>
+</head>
+<body>
+
+<div id="landing-view">
+  <div class="topbar">
+    <div class="logo"><div class="logo-mark"></div> Banzai Mundo</div>
+    <div class="nav-actions">
+      <button class="nav-link" onclick="openModal('login')">Iniciar sesión</button>
+      <button class="btn-primary" onclick="openModal('signup')">Crear cuenta</button>
+    </div>
+  </div>
+
+  <div class="hero">
+    <h1>Lo que vos sabés hacer,<br>en <em>cualquier idioma del mundo.</em></h1>
+    <p>Un lugar donde cualquier persona enseña o hace lo que sabe, para cualquier otra persona del planeta — sin que el idioma sea una barrera.</p>
+    <div class="hero-search">
+      <input id="landing-search" placeholder="¿Qué querés aprender o encontrar hoy?" onkeydown="if(event.key==='Enter'){openModal('signup')}">
+      <button class="btn-primary" onclick="openModal('signup')">Buscar</button>
+    </div>
+  </div>
+
+  <div class="ticker-wrap">
+    <div class="ticker-label">Ahora mismo, en el mundo</div>
+    <div class="ticker-track" id="ticker-track"></div>
+  </div>
+
+  <div class="cats" id="landing-cats"></div>
+
+  <div class="container">
+    <div class="grid" id="landing-grid"></div>
+  </div>
+</div>
+
+<div id="app-view" class="hidden">
+  <div class="topbar">
+    <div class="logo"><div class="logo-mark"></div> Banzai Mundo</div>
+    <div class="app-nav">
+      <button class="tab active" data-tab="browse" onclick="switchTab('browse')">Explorar</button>
+      <button class="tab" data-tab="post" onclick="switchTab('post')">Publicar</button>
+      <button class="tab" data-tab="requests" onclick="switchTab('requests')">Mis sesiones</button>
+    </div>
+    <div class="nav-actions">
+      <span style="font-size:13px;color:var(--text2);" id="hello-name"></span>
+      <button class="btn-ghost" onclick="logout()">Salir</button>
+    </div>
+  </div>
+
+  <div class="container">
+    <div id="tab-browse">
+      <div class="section-title">Explorar habilidades</div>
+      <div class="section-sub">Buscá lo que necesitás aprender o resolver, de cualquier parte del mundo.</div>
+      <div class="hero-search" style="max-width:100%;margin-bottom:16px;">
+        <input id="app-search" placeholder="Buscar (ej: guitarra, programación, diseño...)" oninput="debouncedSearch()">
+      </div>
+      <div class="cats" id="app-cats" style="padding:0 0 8px;justify-content:flex-start;"></div>
+      <div class="grid" id="app-grid"></div>
+    </div>
+
+    <div id="tab-post" class="hidden">
+      <div class="section-title">Publicá lo que sabés hacer</div>
+      <div class="section-sub">Una habilidad, un servicio, una clase — lo que sea que puedas ofrecerle a alguien en el mundo.</div>
+      <div style="max-width:520px;">
+        <label>Título</label>
+        <input id="post-title" placeholder="Ej: Clases de guitarra para principiantes">
+        <label>Categoría</label>
+        <select id="post-category"></select>
+        <label>Descripción</label>
+        <textarea id="post-description" placeholder="Contá tu experiencia y qué incluye la sesión"></textarea>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">
+          <div><label>Precio</label><input id="post-price" type="number" min="0" step="0.01" placeholder="0"></div>
+          <div><label>Moneda</label><input id="post-currency" value="USD"></div>
+          <div><label>Minutos</label><input id="post-minutes" type="number" min="1" value="60"></div>
+        </div>
+        <div class="modal-actions" style="margin-top:20px;">
+          <button class="btn-primary" style="flex:1;" onclick="createSkill()">Publicar</button>
+        </div>
+        <div id="post-result" style="margin-top:12px;font-size:13px;"></div>
+      </div>
+      <div class="section-title" style="font-size:18px;margin-top:40px;">Tus publicaciones</div>
+      <div class="grid" id="my-skills-grid" style="margin-top:14px;"></div>
+    </div>
+
+    <div id="tab-requests" class="hidden">
+      <div class="section-title">Mis sesiones</div>
+      <div class="section-sub">Pedidos que enviaste y que recibiste.</div>
+      <div style="display:flex;gap:6px;margin-bottom:18px;">
+        <button class="cat-pill active" id="req-sub-received" onclick="switchReqSub('received')">Recibidos</button>
+        <button class="cat-pill" id="req-sub-sent" onclick="switchReqSub('sent')">Enviados</button>
+      </div>
+      <div class="req-list" id="requests-list"></div>
+    </div>
+  </div>
+</div>
+
+<div id="auth-modal" class="modal-bg hidden">
+  <div class="modal">
+    <div id="signup-form">
+      <h2>Crear tu cuenta</h2>
+      <div class="sub">Un minuto y ya podés publicar o buscar habilidades.</div>
+      <label>Nombre</label><input id="su-name" placeholder="Tu nombre">
+      <label>Email</label><input id="su-email" type="email" placeholder="vos@ejemplo.com">
+      <label>Contraseña</label><input id="su-password" type="password" placeholder="Mínimo 6 caracteres">
+      <label>País</label><input id="su-country" placeholder="Ej: Argentina">
+      <label>Idioma</label><select id="su-language"></select>
+      <div class="err-text" id="signup-err"></div>
+      <div class="modal-actions"><button class="btn-primary" onclick="doSignup()">Crear cuenta</button></div>
+      <div class="switch-link">¿Ya tenés cuenta? <button onclick="openModal('login')">Iniciar sesión</button></div>
+    </div>
+    <div id="login-form" class="hidden">
+      <h2>Bienvenido de nuevo</h2>
+      <div class="sub">Iniciá sesión para seguir.</div>
+      <label>Email</label><input id="li-email" type="email" placeholder="vos@ejemplo.com">
+      <label>Contraseña</label><input id="li-password" type="password" placeholder="Tu contraseña">
+      <div class="err-text" id="login-err"></div>
+      <div class="modal-actions"><button class="btn-primary" onclick="doLogin()">Iniciar sesión</button></div>
+      <div class="switch-link">¿Todavía no tenés cuenta? <button onclick="openModal('signup')">Crear una</button></div>
+    </div>
+    <button class="btn-ghost" style="width:100%;margin-top:8px;" onclick="closeModal()">Cancelar</button>
+  </div>
+</div>
+
+<div id="skill-modal" class="modal-bg hidden">
+  <div class="modal" id="skill-modal-body" style="width:500px;"></div>
+</div>
+
+<div id="chat-modal" class="modal-bg hidden">
+  <div class="modal" style="width:560px;">
+    <h2 id="chat-modal-title">Conversación</h2>
+    <div class="sub" id="chat-modal-sub"></div>
+    <div id="chat-actions" style="display:flex;gap:8px;margin-bottom:14px;"></div>
+    <div class="chat-box">
+      <div class="chat-msgs" id="chat-msgs"></div>
+      <div class="chat-input">
+        <input id="chat-input-text" placeholder="Escribí un mensaje..." onkeydown="if(event.key==='Enter')sendChatMessage()">
+        <button onclick="sendChatMessage()">Enviar</button>
+      </div>
+    </div>
+    <button class="btn-ghost" style="width:100%;margin-top:12px;" onclick="closeChatModal()">Cerrar</button>
+  </div>
+</div>
+
+<div id="review-modal" class="modal-bg hidden">
+  <div class="modal">
+    <h2>¿Cómo fue la sesión?</h2>
+    <div class="sub">Tu calificación ayuda a que otros confíen.</div>
+    <div class="stars" id="review-stars"></div>
+    <label>Comentario (opcional)</label>
+    <textarea id="review-comment" placeholder="Contá cómo te fue"></textarea>
+    <div class="modal-actions">
+      <button class="btn-ghost" onclick="closeReviewModal()">Ahora no</button>
+      <button class="btn-primary" onclick="submitReview()">Enviar calificación</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast-host" id="toast-host"></div>
+
+<script>
+const S = { user: null, categories: [], languages: {}, activeCategory: '', reqSub: 'received', currentChatReqId: null, reviewReqId: null, reviewRating: 0 };
+const $ = id => document.getElementById(id);
+
+function toast(msg, type='ok') {
+  const el = document.createElement('div');
+  el.className = 'toast ' + type;
+  el.textContent = msg;
+  $('toast-host').appendChild(el);
+  setTimeout(() => el.remove(), 3500);
+}
+async function api(path, opts={}) {
+  const res = await fetch(path, { headers: {'Content-Type':'application/json', ...(opts.headers||{})}, credentials:'same-origin', ...opts });
+  const data = await res.json().catch(()=>({}));
+  if (!res.ok || data.ok === false) throw new Error(data.error || 'Error de red');
+  return data;
+}
+function fmtMoney(v, cur) {
+  try { return new Intl.NumberFormat('es-AR', {style:'currency', currency:cur||'USD', maximumFractionDigits:0}).format(v||0); }
+  catch(e) { return (cur||'USD') + ' ' + v; }
+}
+function initials(name) { return (name||'?').trim().split(' ').map(p=>p[0]).slice(0,2).join('').toUpperCase(); }
+function statusLabel(status) { var labels = {pending:'Pendiente', accepted:'Aceptado', declined:'Rechazado', completed:'Completado'}; return labels[status] || status; }
+
+const TICKER_CITIES = [
+  ['Rosario, Argentina','Osaka, Japón','guitarra'],
+  ['Ciudad de México','Berlín, Alemania','programación en Python'],
+  ['Manila, Filipinas','Toronto, Canadá','edición de video'],
+  ['Nairobi, Kenia','Madrid, España','contabilidad'],
+  ['Lisboa, Portugal','Bogotá, Colombia','diseño UX'],
+  ['Hanói, Vietnam','São Paulo, Brasil','inglés de negocios'],
+  ['Córdoba, Argentina','Seúl, Corea del Sur','cocina italiana'],
+  ['Ámsterdam, Países Bajos','Lima, Perú','marketing digital'],
+];
+function renderTicker() {
+  const items = [...TICKER_CITIES, ...TICKER_CITIES].map(([from, to, skill]) =>
+    `<div class="ticker-item"><span class="ticker-dot"></span>Alguien en <strong style="color:var(--text)">${from}</strong> está enseñando <strong style="color:var(--gold)">${skill}</strong> a alguien en <strong style="color:var(--text)">${to}</strong></div>`
+  ).join('');
+  $('ticker-track').innerHTML = items;
+}
+
+async function boot() {
+  renderTicker();
+  try {
+    const catData = await api('/api/categories');
+    S.categories = catData.categories;
+    S.languages = catData.languages;
+    renderCategoryPills('landing-cats', false);
+    renderLanguageSelect();
+  } catch(e) { console.warn(e); }
+
+  try {
+    const me = await api('/api/me');
+    S.user = me.user;
+    showApp();
+  } catch(e) {
+    showLanding();
+  }
+}
+
+function showLanding() {
+  $('landing-view').classList.remove('hidden');
+  $('app-view').classList.add('hidden');
+  loadLandingSkills();
+}
+function showApp() {
+  $('landing-view').classList.add('hidden');
+  $('app-view').classList.remove('hidden');
+  $('hello-name').textContent = 'Hola, ' + S.user.name;
+  renderCategoryPills('app-cats', true);
+  loadAppSkills();
+}
+
+function renderCategoryPills(containerId, isApp) {
+  const el = $(containerId);
+  const pills = [{slug:'', name:'Todas'}, ...S.categories.map(c=>({slug:c, name:c}))];
+  el.innerHTML = pills.map(p => `<button class="cat-pill ${p.slug===S.activeCategory?'active':''}" onclick="selectCategory('${p.slug.replace(/'/g,"\\'")}', ${isApp})">${p.name}</button>`).join('');
+}
+function selectCategory(slug, isApp) {
+  S.activeCategory = slug;
+  renderCategoryPills(isApp ? 'app-cats' : 'landing-cats', isApp);
+  isApp ? loadAppSkills() : loadLandingSkills();
+}
+function renderLanguageSelect() {
+  $('su-language').innerHTML = Object.entries(S.languages).map(([k,v]) => `<option value="${k}" ${k==='es'?'selected':''}>${v}</option>`).join('');
+}
+
+async function loadLandingSkills() {
+  try {
+    const q = $('landing-search').value.trim();
+    const params = new URLSearchParams();
+    if (q) params.set('q', q);
+    if (S.activeCategory) params.set('category', S.activeCategory);
+    const r = await api('/api/skills?' + params.toString());
+    renderSkillsGrid('landing-grid', r.skills);
+  } catch(e) { console.warn(e); }
+}
+let searchDebounce;
+function debouncedSearch() { clearTimeout(searchDebounce); searchDebounce = setTimeout(loadAppSkills, 300); }
+async function loadAppSkills() {
+  try {
+    const q = $('app-search').value.trim();
+    const params = new URLSearchParams();
+    if (q) params.set('q', q);
+    if (S.activeCategory) params.set('category', S.activeCategory);
+    const r = await api('/api/skills?' + params.toString());
+    renderSkillsGrid('app-grid', r.skills.filter(s => !S.user || s.user_id !== S.user.id));
+  } catch(e) { console.warn(e); }
+}
+function renderSkillsGrid(containerId, skills) {
+  const el = $(containerId);
+  if (!skills.length) {
+    el.innerHTML = '<div class="empty" style="grid-column:1/-1;">No hay resultados todavía. Sé el primero en publicar algo en esta categoría.</div>';
+    return;
+  }
+  el.innerHTML = skills.map(s => `
+    <div class="skill-card" onclick="openSkillDetail(${s.id})">
+      <div class="skill-cat">${s.category}</div>
+      <div class="skill-title">${s.title}</div>
+      <div class="skill-desc">${s.description}</div>
+      <div class="skill-footer">
+        <div class="provider">
+          <div class="avatar">${initials(s.provider_name)}</div>
+          <span>${s.provider_name} · ${s.provider_country||'—'}</span>
+        </div>
+        <div style="text-align:right;">
+          <div class="price">${fmtMoney(s.price, s.currency)}</div>
+          <div class="rating">${s.provider_rating ? '★ '+s.provider_rating+' ('+s.provider_review_count+')' : 'Sin calificar aún'}</div>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+async function openSkillDetail(id) {
+  try {
+    const r = await api('/api/skills/' + id);
+    const s = r.skill;
+    const reviewsHtml = s.reviews.length
+      ? s.reviews.map(rv => `<div style="padding:10px 0;border-top:1px solid var(--border);"><div style="font-size:13px;font-weight:600;">${'★'.repeat(rv.rating)}${'☆'.repeat(5-rv.rating)} — ${rv.reviewer_name}</div><div style="font-size:12px;color:var(--text2);margin-top:3px;">${rv.comment||''}</div></div>`).join('')
+      : '<div style="font-size:12px;color:var(--text3);margin-top:10px;">Todavía sin calificaciones.</div>';
+    $('skill-modal-body').innerHTML = `
+      <div class="skill-cat">${s.category}</div>
+      <h2 style="margin-bottom:6px;">${s.title}</h2>
+      <div class="sub">Por ${s.provider_name} · ${s.provider_country||'—'} · ${s.session_minutes} min · ${fmtMoney(s.price, s.currency)}</div>
+      <p style="font-size:14px;color:var(--text2);line-height:1.6;margin-top:14px;">${s.description}</p>
+      ${!S.user ? `<div class="modal-actions"><button class="btn-primary" style="flex:1;" onclick="closeSkillModal();openModal('signup')">Crear cuenta para pedir sesión</button></div>` : `
+      <label>Mensaje para ${s.provider_name}</label>
+      <textarea id="request-message" placeholder="Contale qué necesitás y cuándo te vendría bien"></textarea>
+      <div class="modal-actions"><button class="btn-primary" style="flex:1;" onclick="sendSkillRequest(${s.id})">Pedir sesión</button></div>`}
+      <div style="margin-top:20px;">
+        <div style="font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--text3);font-weight:600;">Calificaciones</div>
+        ${reviewsHtml}
+      </div>
+      <button class="btn-ghost" style="width:100%;margin-top:16px;" onclick="closeSkillModal()">Cerrar</button>`;
+    $('skill-modal').classList.remove('hidden');
+  } catch(e) { toast(e.message, 'err'); }
+}
+function closeSkillModal() { $('skill-modal').classList.add('hidden'); }
+
+async function sendSkillRequest(skillId) {
+  const message = $('request-message').value.trim();
+  if (!message) { toast('Escribí un mensaje', 'err'); return; }
+  try {
+    await api('/api/requests', {method:'POST', body: JSON.stringify({skill_id: skillId, message})});
+    toast('Pedido enviado ✓');
+    closeSkillModal();
+    switchTab('requests');
+  } catch(e) { toast(e.message, 'err'); }
+}
+
+function openModal(which) {
+  $('auth-modal').classList.remove('hidden');
+  $('signup-form').classList.toggle('hidden', which !== 'signup');
+  $('login-form').classList.toggle('hidden', which !== 'login');
+}
+function closeModal() { $('auth-modal').classList.add('hidden'); }
+
+async function doSignup() {
+  $('signup-err').textContent = '';
+  try {
+    const r = await api('/api/signup', {method:'POST', body: JSON.stringify({
+      name: $('su-name').value.trim(), email: $('su-email').value.trim(),
+      password: $('su-password').value, country: $('su-country').value.trim(),
+      language: $('su-language').value,
+    })});
+    S.user = r.user;
+    closeModal();
+    showApp();
+    toast('Cuenta creada ✓');
+  } catch(e) { $('signup-err').textContent = e.message; }
+}
+async function doLogin() {
+  $('login-err').textContent = '';
+  try {
+    const r = await api('/api/login', {method:'POST', body: JSON.stringify({email: $('li-email').value.trim(), password: $('li-password').value})});
+    S.user = r.user;
+    closeModal();
+    showApp();
+  } catch(e) { $('login-err').textContent = e.message; }
+}
+async function logout() {
+  await api('/api/logout', {method:'POST'});
+  S.user = null;
+  showLanding();
+}
+
+function switchTab(tab) {
+  document.querySelectorAll('.app-nav .tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
+  ['browse','post','requests'].forEach(t => $('tab-'+t).classList.toggle('hidden', t !== tab));
+  if (tab === 'post') loadMySkills();
+  if (tab === 'requests') loadRequests();
+}
+
+function fillPostCategory() {
+  $('post-category').innerHTML = S.categories.map(c => `<option>${c}</option>`).join('');
+}
+async function createSkill() {
+  const payload = {
+    title: $('post-title').value.trim(), category: $('post-category').value,
+    description: $('post-description').value.trim(), price: $('post-price').value || 0,
+    currency: $('post-currency').value.trim() || 'USD', session_minutes: $('post-minutes').value || 60,
+  };
+  try {
+    await api('/api/skills', {method:'POST', body: JSON.stringify(payload)});
+    $('post-result').innerHTML = '<span style="color:var(--green)">✓ Publicado</span>';
+    ['post-title','post-description'].forEach(id => $(id).value = '');
+    toast('Publicado ✓');
+    loadMySkills();
+  } catch(e) { $('post-result').innerHTML = `<span style="color:var(--coral)">${e.message}</span>`; }
+}
+async function loadMySkills() {
+  try {
+    const r = await api('/api/skills');
+    const mine = r.skills.filter(s => s.user_id === S.user.id);
+    const el = $('my-skills-grid');
+    if (!mine.length) { el.innerHTML = '<div class="empty" style="grid-column:1/-1;">Todavía no publicaste nada.</div>'; return; }
+    el.innerHTML = mine.map(s => `
+      <div class="skill-card" style="cursor:default;">
+        <div class="skill-cat">${s.category}</div>
+        <div class="skill-title">${s.title}</div>
+        <div class="skill-desc">${s.description}</div>
+        <div class="skill-footer">
+          <div class="price">${fmtMoney(s.price, s.currency)}</div>
+          <button class="btn-ghost" style="padding:6px 12px;font-size:12px;" onclick="deleteSkill(${s.id})">Eliminar</button>
+        </div>
+      </div>`).join('');
+  } catch(e) { console.warn(e); }
+}
+async function deleteSkill(id) {
+  if (!confirm('¿Eliminar esta publicación?')) return;
+  try { await api('/api/skills/'+id, {method:'DELETE'}); toast('Eliminado'); loadMySkills(); }
+  catch(e) { toast(e.message, 'err'); }
+}
+
+function switchReqSub(sub) {
+  S.reqSub = sub;
+  $('req-sub-received').classList.toggle('active', sub==='received');
+  $('req-sub-sent').classList.toggle('active', sub==='sent');
+  loadRequests();
+}
+async function loadRequests() {
+  try {
+    const r = await api('/api/requests');
+    const list = S.reqSub === 'received' ? r.received : r.sent;
+    const el = $('requests-list');
+    if (!list.length) { el.innerHTML = '<div class="empty">Nada por acá todavía.</div>'; return; }
+    el.innerHTML = list.map(req => `
+      <div class="req-item" onclick="openChat(${req.id}, '${(req.other_name||'').replace(/'/g,"\\'")}', '${(req.skill_title||'').replace(/'/g,"\\'")}', '${req.status}')">
+        <div>
+          <div style="font-weight:600;font-size:14px;">${req.skill_title}</div>
+          <div style="font-size:12px;color:var(--text3);">${S.reqSub==='received'?'De':'A'} ${req.other_name}</div>
+        </div>
+        <span class="req-badge ${req.status}">${statusLabel(req.status)}</span>
+      </div>`).join('');
+  } catch(e) { console.warn(e); }
+}
+
+async function openChat(reqId, otherName, skillTitle, status) {
+  S.currentChatReqId = reqId;
+  $('chat-modal-title').textContent = otherName;
+  $('chat-modal-sub').textContent = skillTitle;
+  $('chat-modal').classList.remove('hidden');
+  renderChatActions(reqId, status);
+  await loadChatMessages(reqId);
+}
+function renderChatActions(reqId, status) {
+  const el = $('chat-actions');
+  const isReceived = S.reqSub === 'received';
+  if (status === 'pending' && isReceived) {
+    el.innerHTML = `<button class="btn-primary" style="flex:1;" onclick="respondRequest(${reqId},'accept')">Aceptar</button><button class="btn-ghost" style="flex:1;" onclick="respondRequest(${reqId},'decline')">Rechazar</button>`;
+  } else if (status === 'accepted') {
+    el.innerHTML = `<button class="btn-primary" style="flex:1;" onclick="respondRequest(${reqId},'complete')">Marcar como completada</button>`;
+  } else if (status === 'completed') {
+    el.innerHTML = `<button class="btn-ghost" style="flex:1;" onclick="openReviewModal(${reqId})">Dejar calificación</button>`;
+  } else {
+    el.innerHTML = '';
+  }
+}
+async function respondRequest(reqId, action) {
+  try {
+    await api('/api/requests/'+reqId+'/respond', {method:'POST', body: JSON.stringify({action})});
+    toast('Actualizado ✓');
+    renderChatActions(reqId, {accept:'accepted',decline:'declined',complete:'completed'}[action]);
+    loadRequests();
+  } catch(e) { toast(e.message, 'err'); }
+}
+async function loadChatMessages(reqId) {
+  try {
+    const r = await api('/api/requests/'+reqId+'/messages');
+    const el = $('chat-msgs');
+    el.innerHTML = r.messages.map(m => {
+      const mine = m.sender_id === S.user.id;
+      const translated = !mine && m.translated_text ? `<span class="translated">${m.translated_text}</span>` : '';
+      return `<div class="bubble ${mine?'mine':'theirs'}">${m.text}${translated}</div>`;
+    }).join('');
+    el.scrollTop = el.scrollHeight;
+  } catch(e) { console.warn(e); }
+}
+async function sendChatMessage() {
+  const text = $('chat-input-text').value.trim();
+  if (!text || !S.currentChatReqId) return;
+  try {
+    await api('/api/requests/'+S.currentChatReqId+'/messages', {method:'POST', body: JSON.stringify({text})});
+    $('chat-input-text').value = '';
+    await loadChatMessages(S.currentChatReqId);
+  } catch(e) { toast(e.message, 'err'); }
+}
+function closeChatModal() { $('chat-modal').classList.add('hidden'); S.currentChatReqId = null; }
+
+function openReviewModal(reqId) {
+  S.reviewReqId = reqId; S.reviewRating = 0;
+  renderStars();
+  $('review-comment').value = '';
+  $('review-modal').classList.remove('hidden');
+}
+function closeReviewModal() { $('review-modal').classList.add('hidden'); }
+function renderStars() {
+  $('review-stars').innerHTML = [1,2,3,4,5].map(n => `<span class="${n<=S.reviewRating?'on':''}" onclick="setRating(${n})">★</span>`).join('');
+}
+function setRating(n) { S.reviewRating = n; renderStars(); }
+async function submitReview() {
+  if (!S.reviewRating) { toast('Elegí una calificación', 'err'); return; }
+  try {
+    await api('/api/reviews', {method:'POST', body: JSON.stringify({request_id: S.reviewReqId, rating: S.reviewRating, comment: $('review-comment').value.trim()})});
+    toast('¡Gracias por tu calificación! ✓');
+    closeReviewModal();
+    closeChatModal();
+  } catch(e) { toast(e.message, 'err'); }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  boot();
+  fillPostCategory();
+});
+</script>
+</body>
+</html>
